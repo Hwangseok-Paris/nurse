@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../resources/asset/js/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <h1>병동 근무표</h1>
+    <table>
+        <tr>
+            <th id='yearmonth'>asdf</th>
+        </tr>
+        <tr id='date'></tr>
+        <tr id="koDay"></tr>
+        <tr>
+            <td>간호사1</td>
+            <td>수간호사</td>
+        </tr>
+    </table>
+
+</body>
+<script>
+    var date = new Date();
+    var currentYear = date.getFullYear(); // 연도
+    var currentMonth = date.getMonth() + 1; // 월
+    var currentDate = date.getDate(); // 일
+
+    var week = new Array('일', '월', '화', '수', '목', '금', '토'); // 요일
+    var lastDate = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31); // 월별 일수
+
+    if (currentYear % 4 == 0 && currentYear % 100 == 0 && currentYear % 400 == 0) {
+        lastDate[1] = 29;  // 윤달
+    }
+
+    // 월별 날짜 & 요일
+    var printDate = "";
+    printDate = "<td colspan=2></td>"
+    for (var i = 1; i <= lastDate[currentMonth - 1]; i++) {
+        printDate += "<td>" + i + "</td>";
+    }
+
+    var printDay = "<td colspan=2></td>";
+    for (var i = 1; i <= lastDate[currentMonth - 1]; i++) {
+        date = new Date(currentYear, currentMonth - 1, i);
+        printDay += "<td>" + getday(date) + "</td>";
+    }
+
+    // 요일 구하는 함수
+    function getday(date) {
+        var day = this.date.getDay();
+        var koDay = week[day];
+        return koDay;
+    }
+
+    console.log(getday());
+    console.log(currentYear + "년 " + currentMonth + "월 " + currentDate + '일 ' + getday() + "요일");
+
+    $(function () {
+        $('#yearmonth').html(currentYear + "년 " + currentMonth + "월");
+        $('#yearmonth').attr("colspan", lastDate[currentMonth + 1] + 2);
+        $('#date').html(printDate);
+        $('#koDay').html(printDay);
+    });
+
+
+</script>
+
+</html>
