@@ -4,14 +4,40 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <script src="../resources/asset/js/jquery-3.6.0.min.js"></script>
-
 </head>
+
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    .monthSelect {
+        text-align: center;
+    }
+
+    table {
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    p {
+        margin: 0 0;
+    }
+</style>
 
 <body>
     <h1>병동 근무표</h1>
+
+    <div class="monthSelect">
+
+        <div class="currentDate">
+            <input type="month" id="selectedDate" value="2021-08">
+        </div>
+
+    </div>
     <table>
         <tr>
-            <th id='yearmonth'>asdf</th>
+            <th id='yearmonth'></th>
         </tr>
         <tr id='date'></tr>
         <tr id="koDay"></tr>
@@ -19,11 +45,32 @@
             <td>간호사1</td>
             <td>수간호사</td>
         </tr>
+
+
     </table>
 
 </body>
+
+
 <script>
-    var date = new Date();
+    $(function () {
+        prepareCalender();
+        printCal();
+    })
+
+
+    $('#selectedDate').change(function () {
+        date = new Date($('#selectedDate').val());
+        currentYear = date.getFullYear(); // 연도
+        currentMonth = date.getMonth() + 1; // 월
+        currentDate = date.getDate(); // 일
+        prepareCalender();
+        printCal();
+    })
+
+
+
+    var date = new Date($('#selectedDate').val());
     var currentYear = date.getFullYear(); // 연도
     var currentMonth = date.getMonth() + 1; // 월
     var currentDate = date.getDate(); // 일
@@ -35,35 +82,51 @@
         lastDate[1] = 29;  // 윤달
     }
 
-    // 월별 날짜 & 요일
     var printDate = "";
-    printDate = "<td colspan=2></td>"
-    for (var i = 1; i <= lastDate[currentMonth - 1]; i++) {
-        printDate += "<td>" + i + "</td>";
-    }
-
     var printDay = "<td colspan=2></td>";
-    for (var i = 1; i <= lastDate[currentMonth - 1]; i++) {
-        date = new Date(currentYear, currentMonth - 1, i);
-        printDay += "<td>" + getday(date) + "</td>";
+
+    function prepareCalender() {
+        // 월별 날짜 & 요일
+        printDate = "";
+        printDate = "<td colspan=2></td>"
+        for (var i = 1; i <= lastDate[currentMonth - 1]; i++) {
+            date = new Date(currentYear, currentMonth - 1, i);
+            var day = date.getDay();
+            printDate += "<td class=" + day + ">"
+                + '<p class="day' + day + '">'
+                + i
+                + '</p>'
+                + "</td>";
+        }
+
+
+        printDay = "<td colspan=2></td>";
+        for (var i = 1; i <= lastDate[currentMonth - 1]; i++) {
+            date = new Date(currentYear, currentMonth - 1, i);
+            printDay += "<td class=" + day + ">" + getday(date) + "</td>";
+        }
+
+        // 요일 구하는 함수
+        function getday(date) {
+            var day = this.date.getDay();
+            var koDay = '<p class="day' + day + '">' + week[day] + '</p>';
+            return koDay;
+        }
     }
 
-    // 요일 구하는 함수
-    function getday(date) {
-        var day = this.date.getDay();
-        var koDay = week[day];
-        return koDay;
-    }
+    // console.log(getday());
+    // console.log(currentYear + "년 " + currentMonth + "월 " + currentDate + '일 ' + getday() + "요일");
 
-    console.log(getday());
-    console.log(currentYear + "년 " + currentMonth + "월 " + currentDate + '일 ' + getday() + "요일");
-
-    $(function () {
+    function printCal() {
         $('#yearmonth').html(currentYear + "년 " + currentMonth + "월");
         $('#yearmonth').attr("colspan", lastDate[currentMonth + 1] + 2);
         $('#date').html(printDate);
         $('#koDay').html(printDay);
-    });
+        $('.day0').css('color', 'red');
+        $('.day6').css('color', 'blue');
+
+        // $('.currentDate').html(currentYear + "년 " + currentMonth + "월 " + currentDate + '일 ' + getday() + "요일");
+    };
 
 
 </script>
