@@ -1,0 +1,28 @@
+ h1 {
+        text-align: center;
+    }
+
+    .monthSelect {
+        text-align: center;
+    }
+
+    table {
+        style: none;
+        width: 90%;
+        margin: 20px auto;
+        border-spacing: unset;
+        text-align: center;
+    }
+
+    td {
+        border-right: 1px solid black;
+        border-top: 1px solid black;
+    }
+
+    p {
+        margin: 0 0;
+    }
+
+    tr {
+        border-bottom: 1px solid black;
+    }
